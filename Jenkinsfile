@@ -1,59 +1,52 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    AWS_REGION = "ap-south-1"
-    CLUSTER_NAME = "petclinic-cluster"
-  }
-
-  stages {
-
-    // ✅ Clean workspace (fix git issue)
-    stage('Clean Workspace') {
-      steps {
-        deleteDir()
-      }
+    environment {
+        AWS_REGION = "ap-south-1"
+        CLUSTER_NAME =   "petclinic-cluster"
     }
 
-    // ✅ Checkout using Jenkins Git (best practice)
-    stage('Git Checkout') {
-      steps {
-        git branch: 'main' , url: 'https://github.com/manoj723529/spring-petclinic.git'
-      }
-    }
+    stages {
 
-    // -------------------------
-    // TERRAFORM INIT
-    // -------------------------
-    stage('Terraform Init') {
-      steps {
-        dir('terraform') {
-          sh 'terraform init -upgrade'
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()
+            }
         }
-      }
-    }
 
-    // -------------------------
-    // TERRAFORM PLAN
-    // -------------------------
-    stage('Terraform Plan') {
-      steps {
-        dir('terraform') {
-          sh 'terraform plan'
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/manoj723529/spring-petclinic.git'
+            }
         }
-      }
-    }
 
-    // -------------------------
-    // TERRAFORM APPLY
-    // -------------------------
-    stage('Terraform Apply') {
-      steps {
-        dir('terraform') {
-          sh 'terraform apply -auto-approve'
+        stage('Terraform Init') {
+            steps {
+                dir('terraform') {
+                    sh '''
+                    terraform init -upgrade\
+                    -backend-config="bucket=petclinic-terraform-state" \
+                    -backend-config="key=eks/terraform.tfstate" \
+                    -backend-config="region=ap-south-1"
+                    '''
+                }
+            }
         }
-      }
-    }
 
-  }
+        stage('Terraform Plan') {
+            steps {
+                dir('terraform') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir('terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+    }
 }
