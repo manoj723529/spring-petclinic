@@ -7,6 +7,7 @@ pipeline {
         ECR_REPO   = "spring/petclinic"
         IMAGE_TAG  = "latest"
         CLUSTER_NAME = "petclinic-cluster"
+        ECR_URI = "985635452569.dkr.ecr.ap-south-1.amazonaws.com/spring/petclinic"
     }
 
     stages {
@@ -82,6 +83,20 @@ pipeline {
                 dir('terraform') {
                     sh 'terraform apply -auto-approve'
                 }
+            }
+        }
+        stage('Configure kubectl') {
+            steps {
+                sh '''
+                aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+                '''
+            }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                sh '''
+                kubectl apply -f k8s/
+                '''
             }
         }
     }
