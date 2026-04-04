@@ -24,7 +24,7 @@ pipeline {
             steps {
                 dir('terraform') {
                     sh '''
-                    terraform init -upgrade\
+                    terraform init -upgrade -reconfigure\
                     -backend-config="bucket=petclinic-terraform-state123" \
                     -backend-config="key=eks/terraform.tfstate" \
                     -backend-config="region=ap-south-1"
