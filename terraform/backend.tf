@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0"
 
   backend "s3" {
-    bucket         = "petclinic-terraform-state"
+    bucket         = "petclinic-terraform-state123"
     key            = "eks/terraform.tfstate"
     region         = "ap-south-1"
     encrypt        = true
