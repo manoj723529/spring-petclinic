@@ -85,6 +85,12 @@ pipeline {
                 }
             }
         }
+        stage('Terraform destroy') {
+            steps { 
+                sh 'terraform destroy -auto-approve'
+            }
+        }
+        
         stage('Configure kubectl') {
             steps {
                 sh '''
