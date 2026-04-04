@@ -27,7 +27,7 @@ pipeline {
     // -------------------------
     stage('Terraform Init') {
       steps {
-        dir('spring-petclinic/terraform') {
+        dir('terraform') {
           sh 'terraform init -upgrade'
         }
       }
@@ -38,7 +38,7 @@ pipeline {
     // -------------------------
     stage('Terraform Plan') {
       steps {
-        dir('spring-petclinic/terraform') {
+        dir('terraform') {
           sh 'terraform plan'
         }
       }
@@ -49,7 +49,7 @@ pipeline {
     // -------------------------
     stage('Terraform Apply') {
       steps {
-        dir('spring-petclinic/terraform') {
+        dir('terraform') {
           sh 'terraform apply -auto-approve'
         }
       }
