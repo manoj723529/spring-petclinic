@@ -1,15 +1,19 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  cluster_name = "petclinic-cluster"
+  version = "~> 20.0"
 
-  vpc_id  = aws_vpc.main.id
-  subnets = aws_subnet.private[*].id   # 👈 IMPORTANT
+  cluster_name    = "petclinic-cluster"
+  cluster_version = "1.29"
 
-  node_groups = {
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = aws_subnet.private[*].id
+
+  eks_managed_node_groups = {
     default = {
-      desired_capacity = 2
-      max_capacity     = 4
-      min_capacity     = 2
+      desired_size = 2
+      max_size     = 4
+      min_size     = 2
+      instance_types = ["c7i-flex.large"]
     }
   }
 }
