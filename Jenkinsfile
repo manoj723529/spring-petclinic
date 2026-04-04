@@ -18,7 +18,7 @@ pipeline {
     // ✅ Checkout using Jenkins Git (best practice)
     stage('Git Checkout') {
       steps {
-        git 'https://github.com/manoj723529/spring-petclinic.git'
+        git branch: 'main' , url: 'https://github.com/manoj723529/spring-petclinic.git'
       }
     }
 
