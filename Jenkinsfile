@@ -29,7 +29,7 @@ pipeline {
                 '''
             }
         }
-        stage('ECR Login and tagging') {
+        stage('ECR Login') {
             steps {
                 sh '''
                 aws ecr get-login-password --region $AWS_REGION | \
@@ -38,7 +38,7 @@ pipeline {
                 '''
             }
         }
-        stage('Push Image') {
+        stage('Tagging') {
             steps {
                 sh '''
                 docker tag $ECR_REPO:$IMAGE_TAG \
