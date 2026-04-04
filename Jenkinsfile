@@ -25,7 +25,7 @@ pipeline {
                 dir('terraform') {
                     sh '''
                     terraform init -upgrade\
-                    -backend-config="bucket=petclinic-terraform-state" \
+                    -backend-config="bucket=petclinic-terraform-state123" \
                     -backend-config="key=eks/terraform.tfstate" \
                     -backend-config="region=ap-south-1"
                     '''
