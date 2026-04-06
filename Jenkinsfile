@@ -77,7 +77,13 @@ pipeline {
                 }
             }
         }
-
+        stage('Terraform Destroy') {
+            steps {
+                dir('terraform') {
+                    sh 'terraform destroy -target=module.eks.module.eks_managed_node_group'
+                }
+            }
+        }
         stage('Terraform Apply') {
             steps {
                 dir('terraform') {
