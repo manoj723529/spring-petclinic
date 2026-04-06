@@ -6,10 +6,7 @@ module "eks" {
   cluster_version = "1.30"
 
   vpc_id     = aws_vpc.main.id
-  subnet_ids = [
-    aws_subnet.private_1.id,
-    aws_subnet.private_2.id
-  ]
+  subnet_ids = aws_subnet.private[*].id
 
   # 🔥 VERY IMPORTANT
   cluster_endpoint_public_access  = true
