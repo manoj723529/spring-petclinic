@@ -1,12 +1,13 @@
-#stage1 build
-FROM maven:3.9.9-eclipse-temurin-17 AS builder
-WORKDIR /opt/app
+# Stage 1: Build
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+WORKDIR /app
 COPY . .
-RUN mvn package 
+RUN mvn clean package -DskipTests
 
-#Stage2 runtime
-FROM eclipse-temurin:17-jre-jammy
-WORKDIR /opt/app
-COPY --from=builder /opt/app/target/*.jar app.jar
+# Stage 2: Runtime
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
