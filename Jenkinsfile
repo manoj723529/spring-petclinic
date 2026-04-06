@@ -6,7 +6,7 @@ pipeline {
         ACCOUNT_ID = "985635452569"
         ECR_REPO   = "spring/petclinic"
         IMAGE_TAG  = "latest"
-        CLUSTER_NAME = "petclinic-cluster"
+        CLUSTER_NAME = "springpetclinic-cluster"
         ECR_URI = "985635452569.dkr.ecr.ap-south-1.amazonaws.com/spring/petclinic"
     }
 
