@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = "ap-south-1"
+        AWS_REGION = "us-east-1"
         ACCOUNT_ID = "985635452569"
         ECR_REPO   = "spring/petclinic"
         IMAGE_TAG  = "latest"
         CLUSTER_NAME = "springpetclinic-cluster"
-        ECR_URI = "985635452569.dkr.ecr.ap-south-1.amazonaws.com/spring/petclinic"
+        ECR_URI = "985635452569.dkr.ecr.us-east-1.amazonaws.com/spring/petclinic"
     }
 
     stages {
@@ -54,34 +54,6 @@ pipeline {
                 sh '''
                 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
                 '''
-            }
-        }
-
-        stage('Terraform Init') {
-            steps {
-                dir('terraform') {
-                    sh '''
-                    terraform init -upgrade -reconfigure\
-                    -backend-config="bucket=petclinic-terraform-state123" \
-                    -backend-config="key=eks/terraform.tfstate" \
-                    -backend-config="region=ap-south-1"
-                    '''
-                }
-            }
-        }
-
-        stage('Terraform Plan') {
-            steps {
-                dir('terraform') {
-                    sh 'terraform plan'
-                }
-            }
-        }
-        stage('Terraform Apply') {
-            steps {
-                dir('terraform') {
-                    sh 'terraform apply -auto-approve'
-                }
             }
         }
         stage('Configure kubectl') {
