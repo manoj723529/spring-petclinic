@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: petclinic-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: petclinic
   ports:
