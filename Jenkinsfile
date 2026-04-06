@@ -75,7 +75,7 @@ pipeline {
 
                  kubectl apply -f k8s/deployment.yaml
                  kubectl apply -f k8s/svc.yaml
-                 kubectl apply -f k8s/ingress.yaml
+            
                 '''
                 }
             }
