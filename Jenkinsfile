@@ -65,11 +65,19 @@ pipeline {
         }
         stage('Deploy to EKS') {
             steps {
-                sh '''
-                kubectl apply -f k8s/deployment.yaml
-                kubectl apply -f k8s/ingress.yaml
-                kubectl apply -f k8s/svc.yaml
+                withCredentials([string(credentialsId: 'aws-creds', variable: 'AWS_CREDS')]) {
+                  sh '''
+                  export $(echo $AWS_CREDS | xargs)
+
+                  aws eks update-kubeconfig --region us-east-1 --name springpetclinic-cluster
+
+                  kubectl get nodes
+
+                 kubectl apply -f k8s/deployment.yaml
+                 kubectl apply -f k8s/svc.yaml
+                 kubectl apply -f k8s/ingress.yaml
                 '''
+                }
             }
         }
     }
